@@ -1,0 +1,35 @@
+services:
+  nuxt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://lgtm:4318
+    depends_on:
+      - lgtm
+    networks:
+      - app-network
+
+  lgtm:
+    image: grafana/otel-lgtm
+    container_name: lgtm
+    ports:
+      - "3001:3000"   # Grafana UI
+      - "4317:4317"   # OpenTelemetry gRPC
+      - "4318:4318"   # OpenTelemetry HTTP
+    volumes:
+      - lgtm-data:/data
+      - ./grafana/serverlist-overview.json:/otel-lgtm/grafana-dashboard-serverlist.json:ro
+      - ./grafana/serverlist.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/serverlist.yaml:ro
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  lgtm-data:

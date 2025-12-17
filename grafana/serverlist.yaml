@@ -1,0 +1,8 @@
+apiVersion: 1
+
+providers:
+  - name: "Serverlist Overview"
+    type: file
+    options:
+      path: /otel-lgtm/grafana-dashboard-serverlist.json
+      foldersFromFilesStructure: false

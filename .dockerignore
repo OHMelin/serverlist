@@ -1,0 +1,11 @@
+node_modules
+package-lock.json
+.nuxt
+.output
+.git
+.gitignore
+.env*
+*.md
+.DS_Store
+.vscode
+.idea
