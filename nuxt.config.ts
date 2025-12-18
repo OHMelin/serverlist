@@ -3,7 +3,7 @@ const otelEnabled = process.env.OTEL_ENABLED === 'true'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   ...(otelEnabled ? {} : {
     vite: {
       build: {
@@ -39,6 +39,16 @@ export default defineNuxtConfig({
       ]
     }
   },
+  seo: {
+    meta: {
+      description: 'The best Minecraft serverlist. Find your next favorite server on MinecraftFYP.',
+      ogTitle: 'MinecraftFYP',
+      ogType: 'website',
+      ogImage: '/og-image.png',
+      twitterCard: 'summary_large_image',
+      twitterImage: '/twitter-image.png',
+    }
+  },
   css: ['@/assets/css/main.css'],
-  modules: ['@nuxt/ui']
+  modules: ['@nuxt/ui', 'nuxt-seo-utils']
 })
