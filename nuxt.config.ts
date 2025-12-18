@@ -51,9 +51,15 @@ export default defineNuxtConfig({
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
         { rel: 'manifest', href: '/site.webmanifest' },
       ],
+      script: [
+        { 'src': 'https://datafa.st/js/script.js', 'defer': true, 'data-website-id': 'dfid_XUHRpmaCssjM81ZZPh9wJ', 'data-domain': 'minecraftfyp.com', 'data-allow-localhost': true },
+      ],
     },
   },
   css: ['@/assets/css/main.css'],
+  runtimeConfig: {
+    datafastApiKey: process.env.DATAFAST_API_KEY,
+  },
   eslint: {
     config: {
       stylistic: true,
