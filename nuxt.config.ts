@@ -57,7 +57,14 @@ export default defineNuxtConfig({
       logo: '/favicon.svg',
     })
   },
-  modules: ['@nuxt/ui', 'nuxt-seo-utils', 'nuxt-link-checker', 'nuxt-schema-org', '@nuxtjs/sitemap'],
+  modules: [
+    '@nuxt/ui',
+    'nuxt-seo-utils',
+    'nuxt-link-checker',
+    'nuxt-schema-org',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots'
+  ],
   linkChecker: {
     failOnError: true,
     runOnBuild: true,
