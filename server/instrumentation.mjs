@@ -31,7 +31,7 @@ if (process.env.OTEL_ENABLED === 'true') {
     logRecordProcessor: new BatchLogRecordProcessor(
       new OTLPLogExporter({
         url: `${otlpEndpoint}/v1/logs`,
-      })
+      }),
     ),
     instrumentations: [
       getNodeAutoInstrumentations({
@@ -46,7 +46,7 @@ if (process.env.OTEL_ENABLED === 'true') {
   process.on('SIGTERM', () => {
     sdk.shutdown()
       .then(() => console.log('OpenTelemetry SDK shut down'))
-      .catch((error) => console.error('Error shutting down SDK', error))
+      .catch(error => console.error('Error shutting down SDK', error))
       .finally(() => process.exit(0))
   })
 }

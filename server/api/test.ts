@@ -25,7 +25,7 @@ async function getOtel(): Promise<OtelContext | null> {
     logger: logs.logs.getLogger('serverlist-api'),
     SpanStatusCode: api.SpanStatusCode,
     SeverityNumber: logs.SeverityNumber,
-    counter: null!
+    counter: null!,
   }
   context.counter = context.meter.createCounter('api_requests_total')
   otel = context
