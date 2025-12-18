@@ -50,5 +50,9 @@ export default defineNuxtConfig({
     }
   },
   css: ['@/assets/css/main.css'],
-  modules: ['@nuxt/ui', 'nuxt-seo-utils']
+  modules: ['@nuxt/ui', 'nuxt-seo-utils', 'nuxt-link-checker'],
+  linkChecker: {
+    failOnError: true,
+    runOnBuild: true,
+  }
 })

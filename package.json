@@ -19,6 +19,7 @@
     "@opentelemetry/sdk-logs": "^0.208.0",
     "@opentelemetry/sdk-node": "^0.208.0",
     "nuxt": "^4.2.2",
+    "nuxt-link-checker": "^4.3.9",
     "nuxt-seo-utils": "^7.0.19",
     "vue": "^3.5.25",
     "vue-router": "^4.6.4"
