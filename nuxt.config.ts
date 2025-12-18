@@ -38,5 +38,7 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: '/site.webmanifest' },
       ]
     }
-  }
+  },
+  css: ['@/assets/css/main.css'],
+  modules: ['@nuxt/ui']
 })
