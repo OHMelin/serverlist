@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 const otelEnabled = process.env.OTEL_ENABLED === 'true'
+import { defineOrganization } from 'nuxt-schema-org/schema'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -50,7 +51,13 @@ export default defineNuxtConfig({
     }
   },
   css: ['@/assets/css/main.css'],
-  modules: ['@nuxt/ui', 'nuxt-seo-utils', 'nuxt-link-checker'],
+  schemaOrg: {
+    identity: defineOrganization({
+      name: 'MinecraftFYP',
+      logo: '/favicon.svg',
+    })
+  },
+  modules: ['@nuxt/ui', 'nuxt-seo-utils', 'nuxt-link-checker', 'nuxt-schema-org'],
   linkChecker: {
     failOnError: true,
     runOnBuild: true,
