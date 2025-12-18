@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const otelEnabled = process.env.OTEL_ENABLED === 'true'
 import { defineOrganization } from 'nuxt-schema-org/schema'
+const otelEnabled = process.env.OTEL_ENABLED === 'true'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -63,8 +63,14 @@ export default defineNuxtConfig({
     'nuxt-link-checker',
     'nuxt-schema-org',
     '@nuxtjs/sitemap',
-    '@nuxtjs/robots'
+    '@nuxtjs/robots',
+    '@nuxt/eslint'
   ],
+  eslint: {
+    config: {
+      stylistic: true
+    }
+  },
   linkChecker: {
     failOnError: true,
     runOnBuild: true,
