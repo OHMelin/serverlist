@@ -1,24 +1,37 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { defineOrganization } from 'nuxt-schema-org/schema'
+
 const otelEnabled = process.env.OTEL_ENABLED === 'true'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
-  ...(otelEnabled ? {} : {
-    vite: {
-      build: {
-        rollupOptions: {
-          external: [/^@opentelemetry\/.*/]
-        }
-      }
-    },
-    nitro: {
-      rollupConfig: {
-        external: [/^@opentelemetry\/.*/]
-      }
-    }
-  }),
+
+  devtools: { enabled: true }, compatibilityDate: '2025-07-15',
+  ...(otelEnabled
+    ? {}
+    : {
+        vite: {
+          build: {
+            rollupOptions: {
+              external: [/^@opentelemetry\/.*/],
+            },
+          },
+        },
+        nitro: {
+          rollupConfig: {
+            external: [/^@opentelemetry\/.*/],
+          },
+        },
+      }),
+  modules: [
+    '@nuxt/ui',
+    'nuxt-seo-utils',
+    'nuxt-link-checker',
+    'nuxt-schema-org',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
+    '@nuxt/eslint',
+    '@nuxt/test-utils/module',
+  ],
   app: {
     head: {
       htmlAttrs: {
@@ -28,7 +41,7 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'keywords', content: 'Minecraft, Serverlist, Gaming, Community' },
-        { name: "apple-mobile-web-app-title", content: "Bookshelf" },
+        { name: 'apple-mobile-web-app-title', content: 'Bookshelf' },
         { name: 'author', content: 'Valoks' },
       ],
       link: [
@@ -37,8 +50,24 @@ export default defineNuxtConfig({
         { rel: 'shortcut icon', href: '/favicon.ico' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
         { rel: 'manifest', href: '/site.webmanifest' },
-      ]
-    }
+      ],
+    },
+  },
+  css: ['@/assets/css/main.css'],
+  eslint: {
+    config: {
+      stylistic: true,
+    },
+  },
+  linkChecker: {
+    failOnError: true,
+    runOnBuild: true,
+  },
+  schemaOrg: {
+    identity: defineOrganization({
+      name: 'MinecraftFYP',
+      logo: '/favicon.svg',
+    }),
   },
   seo: {
     meta: {
@@ -48,32 +77,6 @@ export default defineNuxtConfig({
       ogImage: '/og-image.png',
       twitterCard: 'summary_large_image',
       twitterImage: '/twitter-image.png',
-    }
+    },
   },
-  css: ['@/assets/css/main.css'],
-  schemaOrg: {
-    identity: defineOrganization({
-      name: 'MinecraftFYP',
-      logo: '/favicon.svg',
-    })
-  },
-  modules: [
-    '@nuxt/ui',
-    'nuxt-seo-utils',
-    'nuxt-link-checker',
-    'nuxt-schema-org',
-    '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
-    '@nuxt/eslint',
-    '@nuxt/test-utils/module'
-  ],
-  eslint: {
-    config: {
-      stylistic: true
-    }
-  },
-  linkChecker: {
-    failOnError: true,
-    runOnBuild: true,
-  }
 })
