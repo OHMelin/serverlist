@@ -64,7 +64,8 @@ export default defineNuxtConfig({
     'nuxt-schema-org',
     '@nuxtjs/sitemap',
     '@nuxtjs/robots',
-    '@nuxt/eslint'
+    '@nuxt/eslint',
+    '@nuxt/test-utils/module'
   ],
   eslint: {
     config: {
