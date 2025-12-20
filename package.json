@@ -17,6 +17,7 @@
     "@nuxt/ui": "^4.3.0",
     "@nuxtjs/robots": "^5.6.7",
     "@nuxtjs/sitemap": "^7.5.0",
+    "@nuxtjs/supabase": "^2.0.3",
     "@opentelemetry/api-logs": "^0.208.0",
     "@opentelemetry/auto-instrumentations-node": "^0.67.2",
     "@opentelemetry/exporter-logs-otlp-http": "^0.208.0",

@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxt/eslint',
     '@nuxt/test-utils/module',
+    '@nuxtjs/supabase',
   ],
   app: {
     head: {
@@ -59,6 +60,10 @@ export default defineNuxtConfig({
   css: ['@/assets/css/main.css'],
   runtimeConfig: {
     datafastApiKey: process.env.DATAFAST_API_KEY,
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY,
+    },
   },
   eslint: {
     config: {
@@ -84,5 +89,8 @@ export default defineNuxtConfig({
       twitterCard: 'summary_large_image',
       twitterImage: '/twitter-image.png',
     },
+  },
+  supabase: {
+    redirect: false,
   },
 })
