@@ -3,51 +3,26 @@ import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
 const supabase = useSupabaseClient()
-
 const toast = useToast()
 
-const signInWithOAuth = async (provider: 'discord' | 'google') => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider,
-    options: {
-      redirectTo: `${window.location.origin}/profile`,
-    },
-  })
-  if (error) {
-    toast.add({ title: 'Error', description: error.message, color: 'error' })
-  }
-}
-
 const fields = [{
-  name: 'email',
-  type: 'text' as const,
-  label: 'Email',
-  placeholder: '',
-}, {
   name: 'password',
-  label: 'Password',
   type: 'password' as const,
+  label: 'New Password',
   placeholder: '',
 }, {
-  name: 'newsletter',
-  label: 'Get emails about product updates. You can unubscribe at any time.',
-  type: 'checkbox' as const,
-}]
-
-const providers = [{
-  label: 'Discord',
-  icon: 'i-simple-icons-discord',
-  onClick: () => signInWithOAuth('discord'),
-}, {
-  label: 'Google',
-  icon: 'i-simple-icons-google',
-  onClick: () => signInWithOAuth('google'),
+  name: 'confirmPassword',
+  type: 'password' as const,
+  label: 'Confirm Password',
+  placeholder: '',
 }]
 
 const schema = z.object({
-  email: z.string().email('Invalid email'),
   password: z.string().min(8, 'Must be at least 8 characters'),
-  newsletter: z.boolean().optional(),
+  confirmPassword: z.string().min(8, 'Must be at least 8 characters'),
+}).refine(data => data.password === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ['confirmPassword'],
 })
 
 type Schema = z.output<typeof schema>
@@ -60,14 +35,8 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
   loading.value = true
   showError.value = false
 
-  const { error } = await supabase.auth.signUp({
-    email: payload.data.email,
+  const { error } = await supabase.auth.updateUser({
     password: payload.data.password,
-    options: {
-      data: {
-        newsletter: payload.data.newsletter ?? false,
-      },
-    },
   })
 
   loading.value = false
@@ -79,15 +48,15 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
   }
 
   toast.add({
-    title: 'Account created',
-    description: 'Please check your email to confirm your account.',
+    title: 'Password updated',
+    description: 'Your password has been updated successfully.',
     color: 'success',
   })
-  navigateTo('/login')
+  navigateTo('/profile')
 }
 
 useSeoMeta({
-  title: 'Signup',
+  title: 'Update Password',
 })
 </script>
 
@@ -97,10 +66,10 @@ useSeoMeta({
       <UAuthForm
         :schema="schema"
         :fields="fields"
-        :providers="providers"
-        title="Create your account"
+        title="Set new password"
+        description="Enter your new password below."
         :submit="{
-          label: 'Create account',
+          label: 'Update password',
           loading: loading,
         }"
         @submit="onSubmit"
@@ -110,14 +79,14 @@ useSeoMeta({
             v-if="showError"
             color="error"
             icon="i-lucide-info"
-            :title="errorMessage || 'Error creating account'"
+            :title="errorMessage || 'Error updating password'"
           />
         </template>
         <template #footer>
-          Already have an account? <ULink
+          <ULink
             :to="'/login'"
             class="text-primary-500 font-medium"
-          >Log in</ULink>
+          >Return to log in</ULink>
         </template>
       </UAuthForm>
     </UPageCard>
