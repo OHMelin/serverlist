@@ -1,5 +1,5 @@
 <template>
   <div>
-    <p>Index page</p>
+    <FrontpageHero />
   </div>
 </template>
