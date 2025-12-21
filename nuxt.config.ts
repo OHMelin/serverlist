@@ -24,6 +24,7 @@ export default defineNuxtConfig({
       }),
   modules: [
     '@nuxt/ui',
+    '@nuxt/content',
     'nuxt-seo-utils',
     'nuxt-link-checker',
     'nuxt-schema-org',
