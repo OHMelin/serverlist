@@ -18,8 +18,9 @@ const fields = [{
 }]
 
 const schema = z.object({
-  password: z.string().min(8, 'Must be at least 8 characters'),
-  confirmPassword: z.string().min(8, 'Must be at least 8 characters'),
+  password: z.string({ error: 'Password is required' }).min(8, { error: 'Must be at least 8 characters' }),
+  confirmPassword: z.string({ error: 'Confirm password is required' }).min(8, { error: 'Must be at least 8 characters' }),
+
 }).refine(data => data.password === data.confirmPassword, {
   message: 'Passwords do not match',
   path: ['confirmPassword'],
