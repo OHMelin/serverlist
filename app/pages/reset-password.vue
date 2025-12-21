@@ -13,7 +13,7 @@ const fields = [{
 }]
 
 const schema = z.object({
-  email: z.string({ error: 'Email is required' }).email({ error: 'Invalid email' }),
+  email: z.string({ message: 'Email is required' }).email({ message: 'Invalid email' }),
 })
 
 type Schema = z.output<typeof schema>
