@@ -45,8 +45,8 @@ const providers = [{
 }]
 
 const schema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Must be at least 8 characters'),
+  email: z.string({ error: 'Email is required' }).email({ error: 'Invalid email' }),
+  password: z.string({ error: 'Password is required' }).min(8, { error: 'Must be at least 8 characters' }),
   newsletter: z.boolean().optional(),
 })
 
