@@ -17,7 +17,7 @@ const userMenuItems = computed(() => [
   {
     label: 'My Servers',
     icon: 'i-lucide-server',
-    to: '/servers',
+    to: '/profile/servers',
   }],
   [{
     label: 'Log out',
