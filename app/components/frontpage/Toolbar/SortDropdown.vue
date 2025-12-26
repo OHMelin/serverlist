@@ -2,7 +2,8 @@
   <USelect
     v-model="selectedSort"
     :items="sortOptions"
-    class="w-48"
+    variant="none"
+    class="w-48 ring ring-inset ring-accented"
   >
     <template #leading>
       <UIcon name="i-heroicons-arrows-up-down" />
