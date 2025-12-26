@@ -81,6 +81,7 @@ export interface Server {
   onlinePlayers: number
   maxPlayers: number
   version: string
+  dateAdded: string
 }
 
 const props = defineProps<{

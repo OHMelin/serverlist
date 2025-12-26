@@ -1,7 +1,20 @@
 import type { Server } from '~/components/frontpage/Server.vue'
 
+export type SortOption = 'players_online' | 'name' | 'newest' | 'random'
+
+const currentSort = ref<SortOption>('players_online')
+
+export function useServerSort() {
+  return {
+    currentSort,
+    setSort: (sort: SortOption) => {
+      currentSort.value = sort
+    },
+  }
+}
+
 export function useServers() {
-  const servers: Server[] = [
+  const rawServers = ref<Server[]>([
     {
       position: 1,
       icon: 'https://api.mcsrvstat.us/icon/hypixel.net',
@@ -13,6 +26,7 @@ export function useServers() {
       onlinePlayers: 45232,
       maxPlayers: 200000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2013-04-15',
     },
     {
       position: 2,
@@ -25,6 +39,7 @@ export function useServers() {
       onlinePlayers: 8921,
       maxPlayers: 50000,
       version: '1.9 - 1.20.4',
+      dateAdded: '2014-07-22',
     },
     {
       position: 3,
@@ -37,6 +52,7 @@ export function useServers() {
       onlinePlayers: 3456,
       maxPlayers: 30000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2013-01-24',
     },
     {
       position: 4,
@@ -48,6 +64,7 @@ export function useServers() {
       onlinePlayers: 1234,
       maxPlayers: 5000,
       version: '1.16 - 1.20.4',
+      dateAdded: '2020-03-10',
     },
     {
       position: 5,
@@ -60,6 +77,7 @@ export function useServers() {
       onlinePlayers: 2891,
       maxPlayers: 15000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2016-08-05',
     },
     {
       position: 6,
@@ -71,6 +89,7 @@ export function useServers() {
       onlinePlayers: 567,
       maxPlayers: 3000,
       version: '1.12.2',
+      dateAdded: '2018-11-20',
     },
     {
       position: 7,
@@ -83,6 +102,7 @@ export function useServers() {
       onlinePlayers: 1823,
       maxPlayers: 10000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2017-05-12',
     },
     {
       position: 8,
@@ -94,6 +114,7 @@ export function useServers() {
       onlinePlayers: 892,
       maxPlayers: 5000,
       version: '1.17 - 1.20.4',
+      dateAdded: '2018-02-28',
     },
     {
       position: 9,
@@ -106,6 +127,7 @@ export function useServers() {
       onlinePlayers: 445,
       maxPlayers: 8000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2015-09-14',
     },
     {
       position: 10,
@@ -117,6 +139,7 @@ export function useServers() {
       onlinePlayers: 2134,
       maxPlayers: 20000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2019-06-30',
     },
     {
       position: 11,
@@ -129,6 +152,7 @@ export function useServers() {
       onlinePlayers: 1567,
       maxPlayers: 12000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2016-01-18',
     },
     {
       position: 12,
@@ -140,8 +164,33 @@ export function useServers() {
       onlinePlayers: 3210,
       maxPlayers: 25000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2021-12-01',
     },
-  ]
+  ])
+
+  const servers = computed(() => {
+    const sorted = [...rawServers.value]
+    switch (currentSort.value) {
+      case 'players_online':
+        sorted.sort((a, b) => b.onlinePlayers - a.onlinePlayers)
+        break
+      case 'name':
+        sorted.sort((a, b) => a.name.localeCompare(b.name))
+        break
+      case 'newest':
+        sorted.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+        break
+      case 'random':
+        for (let i = sorted.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1))
+          const temp = sorted[i]!
+          sorted[i] = sorted[j]!
+          sorted[j] = temp
+        }
+        break
+    }
+    return sorted
+  })
 
   return { servers }
 }
