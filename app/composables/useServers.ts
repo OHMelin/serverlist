@@ -1,8 +1,8 @@
 import type { Server } from '~/components/frontpage/Server.vue'
 
-export type SortOption = 'players_online' | 'name' | 'newest'
+export type SortOption = 'online' | 'name' | 'newest'
 
-const validSortOptions: SortOption[] = ['players_online', 'name', 'newest']
+const validSortOptions: SortOption[] = ['online', 'name', 'newest']
 
 const availableVersions = [
   '1.8 - 1.20.4',
@@ -39,14 +39,12 @@ function updateQueryParams(params: Record<string, string | string[] | undefined>
 
   const query: Record<string, string | string[]> = {}
 
-  // Copy existing query params except ones we're updating
   for (const [key, value] of Object.entries(route.query)) {
     if (!(key in params) && value !== undefined) {
       query[key] = value as string | string[]
     }
   }
 
-  // Add new params
   for (const [key, value] of Object.entries(params)) {
     if (value !== undefined && !(Array.isArray(value) && value.length === 0)) {
       query[key] = value
@@ -62,11 +60,11 @@ export function useServerSort() {
   const currentSort = computed<SortOption>({
     get: () => {
       const sort = route.query.sort as string
-      return validSortOptions.includes(sort as SortOption) ? sort as SortOption : 'players_online'
+      return validSortOptions.includes(sort as SortOption) ? sort as SortOption : 'online'
     },
     set: (value: SortOption) => {
       updateQueryParams({
-        sort: value === 'players_online' ? undefined : value,
+        sort: value === 'online' ? undefined : value,
       })
     },
   })
@@ -308,21 +306,18 @@ export function useServers() {
   const servers = computed(() => {
     let filtered = [...rawServers.value]
 
-    // Apply version filter
     if (selectedVersions.value.length > 0) {
       filtered = filtered.filter(server => selectedVersions.value.includes(server.version))
     }
 
-    // Apply tag filter
     if (selectedTags.value.length > 0) {
       filtered = filtered.filter(server =>
         server.tags.some(tag => selectedTags.value.includes(tag)),
       )
     }
 
-    // Apply sorting
     switch (currentSort.value) {
-      case 'players_online':
+      case 'online':
         filtered.sort((a, b) => b.onlinePlayers - a.onlinePlayers)
         break
       case 'name':

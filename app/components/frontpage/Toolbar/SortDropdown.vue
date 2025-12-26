@@ -17,7 +17,7 @@ import type { SortOption } from '~/composables/useServers'
 const { currentSort, setSort } = useServerSort()
 
 const sortOptions: { label: string, value: SortOption }[] = [
-  { label: 'Players Online', value: 'players_online' },
+  { label: 'Players Online', value: 'online' },
   { label: 'A-Z', value: 'name' },
   { label: 'Newest First', value: 'newest' },
 ]
