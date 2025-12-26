@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="flex flex-col gap-6">
+    <FrontpageToolbar />
     <slot
       :items="paginatedItems"
       :current-page="currentPage"
@@ -8,7 +9,7 @@
 
     <div
       v-if="totalPages > 1"
-      class="flex justify-center mt-6"
+      class="flex justify-center"
     >
       <UPagination
         :default-page="currentPage"

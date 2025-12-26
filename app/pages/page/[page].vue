@@ -2,7 +2,6 @@
   <div>
     <FrontpageHero />
     <UPageSection>
-      <FrontpageToolbar />
       <FrontpagePagination
         :items="servers"
         :per-page="10"
