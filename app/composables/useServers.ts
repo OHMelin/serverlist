@@ -33,7 +33,7 @@ const availableTags = [
   'Practice',
 ]
 
-function updateQueryParams(params: Record<string, string | string[] | undefined>) {
+function updateQueryParams(params: Record<string, string | string[] | undefined>, basePath?: string) {
   const router = useRouter()
   const route = useRoute()
 
@@ -51,7 +51,8 @@ function updateQueryParams(params: Record<string, string | string[] | undefined>
     }
   }
 
-  router.push({ path: '/', query })
+  const path = basePath ?? '/'
+  router.push({ path, query })
 }
 
 export function useServerSort() {
@@ -142,6 +143,32 @@ export function useServerFilter() {
     toggleVersion,
     toggleTag,
     clearFilters,
+  }
+}
+
+export function useServerSearch() {
+  const route = useRoute()
+  const router = useRouter()
+
+  const searchQuery = ref((route.query.q as string) || '')
+
+  watch(searchQuery, (value) => {
+    const query = { ...route.query }
+    if (value) {
+      query.q = value
+    }
+    else {
+      delete query.q
+    }
+    router.replace({ path: route.path, query })
+  })
+
+  watch(() => route.query.q, (value) => {
+    searchQuery.value = (value as string) || ''
+  })
+
+  return {
+    searchQuery,
   }
 }
 
@@ -302,9 +329,20 @@ export function useServers() {
 
   const { currentSort } = useServerSort()
   const { selectedVersions, selectedTags } = useServerFilter()
+  const { searchQuery } = useServerSearch()
 
   const servers = computed(() => {
     let filtered = [...rawServers.value]
+
+    if (searchQuery.value) {
+      const query = searchQuery.value.toLowerCase()
+      filtered = filtered.filter(server =>
+        server.name.toLowerCase().includes(query)
+        || server.description.toLowerCase().includes(query)
+        || server.ip.toLowerCase().includes(query)
+        || server.tags.some(tag => tag.toLowerCase().includes(query)),
+      )
+    }
 
     if (selectedVersions.value.length > 0) {
       filtered = filtered.filter(server => selectedVersions.value.includes(server.version))
@@ -330,5 +368,5 @@ export function useServers() {
     return filtered
   })
 
-  return { servers }
+  return { servers, searchQuery }
 }
