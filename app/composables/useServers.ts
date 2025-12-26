@@ -1,7 +1,152 @@
 import type { Server } from '~/components/frontpage/Server.vue'
 
+export type SortOption = 'online' | 'name' | 'newest'
+
+const validSortOptions: SortOption[] = ['online', 'name', 'newest']
+
+const availableVersions = [
+  '1.8 - 1.20.4',
+  '1.9 - 1.20.4',
+  '1.12.2',
+  '1.16 - 1.20.4',
+  '1.17 - 1.20.4',
+]
+
+const availableTags = [
+  'Minigames',
+  'Skyblock',
+  'Bedwars',
+  'Prison',
+  'Survival',
+  'Creative',
+  'Factions',
+  'PvP',
+  'Economy',
+  'Parkour',
+  'Towny',
+  'Modded',
+  'Pixelmon',
+  'Cracked',
+  'KitPvP',
+  'SkyWars',
+  'EggWars',
+  'Practice',
+]
+
+function updateQueryParams(params: Record<string, string | string[] | undefined>) {
+  const router = useRouter()
+  const route = useRoute()
+
+  const query: Record<string, string | string[]> = {}
+
+  for (const [key, value] of Object.entries(route.query)) {
+    if (!(key in params) && value !== undefined) {
+      query[key] = value as string | string[]
+    }
+  }
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && !(Array.isArray(value) && value.length === 0)) {
+      query[key] = value
+    }
+  }
+
+  router.push({ path: '/', query })
+}
+
+export function useServerSort() {
+  const route = useRoute()
+
+  const currentSort = computed<SortOption>({
+    get: () => {
+      const sort = route.query.sort as string
+      return validSortOptions.includes(sort as SortOption) ? sort as SortOption : 'online'
+    },
+    set: (value: SortOption) => {
+      updateQueryParams({
+        sort: value === 'online' ? undefined : value,
+      })
+    },
+  })
+
+  function setSort(sort: SortOption) {
+    currentSort.value = sort
+  }
+
+  return {
+    currentSort,
+    setSort,
+  }
+}
+
+export function useServerFilter() {
+  const route = useRoute()
+
+  const selectedVersions = computed<string[]>({
+    get: () => {
+      const versions = route.query.version
+      if (!versions) return []
+      const arr = Array.isArray(versions) ? versions : [versions]
+      return arr.filter(v => availableVersions.includes(v as string)) as string[]
+    },
+    set: (value: string[]) => {
+      updateQueryParams({ version: value.length > 0 ? value : undefined })
+    },
+  })
+
+  const selectedTags = computed<string[]>({
+    get: () => {
+      const tags = route.query.tag
+      if (!tags) return []
+      const arr = Array.isArray(tags) ? tags : [tags]
+      return arr.filter(t => availableTags.includes(t as string)) as string[]
+    },
+    set: (value: string[]) => {
+      updateQueryParams({ tag: value.length > 0 ? value : undefined })
+    },
+  })
+
+  function toggleVersion(version: string) {
+    const current = [...selectedVersions.value]
+    const index = current.indexOf(version)
+    if (index === -1) {
+      current.push(version)
+    }
+    else {
+      current.splice(index, 1)
+    }
+    selectedVersions.value = current
+  }
+
+  function toggleTag(tag: string) {
+    const current = [...selectedTags.value]
+    const index = current.indexOf(tag)
+    if (index === -1) {
+      current.push(tag)
+    }
+    else {
+      current.splice(index, 1)
+    }
+    selectedTags.value = current
+  }
+
+  function clearFilters() {
+    updateQueryParams({ version: undefined, tag: undefined })
+  }
+
+  return {
+    availableVersions,
+    availableTags,
+    selectedVersions,
+    selectedTags,
+    toggleVersion,
+    toggleTag,
+    clearFilters,
+  }
+}
+
 export function useServers() {
-  const servers: Server[] = [
+  const rawServers = ref<Server[]>([
     {
       position: 1,
       icon: 'https://api.mcsrvstat.us/icon/hypixel.net',
@@ -13,6 +158,7 @@ export function useServers() {
       onlinePlayers: 45232,
       maxPlayers: 200000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2013-04-15',
     },
     {
       position: 2,
@@ -25,6 +171,7 @@ export function useServers() {
       onlinePlayers: 8921,
       maxPlayers: 50000,
       version: '1.9 - 1.20.4',
+      dateAdded: '2014-07-22',
     },
     {
       position: 3,
@@ -37,6 +184,7 @@ export function useServers() {
       onlinePlayers: 3456,
       maxPlayers: 30000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2013-01-24',
     },
     {
       position: 4,
@@ -48,6 +196,7 @@ export function useServers() {
       onlinePlayers: 1234,
       maxPlayers: 5000,
       version: '1.16 - 1.20.4',
+      dateAdded: '2020-03-10',
     },
     {
       position: 5,
@@ -60,6 +209,7 @@ export function useServers() {
       onlinePlayers: 2891,
       maxPlayers: 15000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2016-08-05',
     },
     {
       position: 6,
@@ -71,6 +221,7 @@ export function useServers() {
       onlinePlayers: 567,
       maxPlayers: 3000,
       version: '1.12.2',
+      dateAdded: '2018-11-20',
     },
     {
       position: 7,
@@ -83,6 +234,7 @@ export function useServers() {
       onlinePlayers: 1823,
       maxPlayers: 10000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2017-05-12',
     },
     {
       position: 8,
@@ -94,6 +246,7 @@ export function useServers() {
       onlinePlayers: 892,
       maxPlayers: 5000,
       version: '1.17 - 1.20.4',
+      dateAdded: '2018-02-28',
     },
     {
       position: 9,
@@ -106,6 +259,7 @@ export function useServers() {
       onlinePlayers: 445,
       maxPlayers: 8000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2015-09-14',
     },
     {
       position: 10,
@@ -117,6 +271,7 @@ export function useServers() {
       onlinePlayers: 2134,
       maxPlayers: 20000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2019-06-30',
     },
     {
       position: 11,
@@ -129,6 +284,7 @@ export function useServers() {
       onlinePlayers: 1567,
       maxPlayers: 12000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2016-01-18',
     },
     {
       position: 12,
@@ -140,8 +296,39 @@ export function useServers() {
       onlinePlayers: 3210,
       maxPlayers: 25000,
       version: '1.8 - 1.20.4',
+      dateAdded: '2021-12-01',
     },
-  ]
+  ])
+
+  const { currentSort } = useServerSort()
+  const { selectedVersions, selectedTags } = useServerFilter()
+
+  const servers = computed(() => {
+    let filtered = [...rawServers.value]
+
+    if (selectedVersions.value.length > 0) {
+      filtered = filtered.filter(server => selectedVersions.value.includes(server.version))
+    }
+
+    if (selectedTags.value.length > 0) {
+      filtered = filtered.filter(server =>
+        server.tags.some(tag => selectedTags.value.includes(tag)),
+      )
+    }
+
+    switch (currentSort.value) {
+      case 'online':
+        filtered.sort((a, b) => b.onlinePlayers - a.onlinePlayers)
+        break
+      case 'name':
+        filtered.sort((a, b) => a.name.localeCompare(b.name))
+        break
+      case 'newest':
+        filtered.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+        break
+    }
+    return filtered
+  })
 
   return { servers }
 }

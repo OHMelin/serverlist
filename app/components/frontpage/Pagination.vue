@@ -45,6 +45,11 @@ const paginatedItems = computed(() => {
 })
 
 function getPageUrl(page: number) {
-  return page === 1 ? '/' : `/page/${page}`
+  const path = page === 1 ? '/' : `/page/${page}`
+  const query = route.query
+  if (Object.keys(query).length === 0) {
+    return path
+  }
+  return { path, query }
 }
 </script>
