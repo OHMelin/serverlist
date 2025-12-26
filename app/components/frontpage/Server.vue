@@ -59,7 +59,7 @@
 
       <div class="shrink-0 text-right min-w-24">
         <p class="text-sm font-semibold">
-          {{ server.onlinePlayers.toLocaleString() }} / {{ server.maxPlayers.toLocaleString() }}
+          {{ server.onlinePlayers.toLocaleString('en-US') }} / {{ server.maxPlayers.toLocaleString('en-US') }}
         </p>
         <p class="text-xs text-gray-500">
           {{ server.version }}

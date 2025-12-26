@@ -14,10 +14,10 @@
     <div class="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
       <div class="mb-8">
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold">
-          {{ serverCount.toLocaleString() }} servers
+          {{ serverCount.toLocaleString('en-US') }} servers
         </h1>
         <p class="text-xl md:text-2xl lg:text-3xl mt-2 font-light">
-          {{ playerCount.toLocaleString() }} players online
+          {{ playerCount.toLocaleString('en-US') }} players online
         </p>
       </div>
 
@@ -35,7 +35,7 @@
             color="primary"
             size="sm"
             icon="i-heroicons-plus"
-            to="servers/add"
+            to="/servers/add"
           >
             Add
           </UButton>
@@ -55,7 +55,7 @@ const playerCount = ref(235072541)
 
 function onSearch() {
   if (searchQuery.value.trim()) {
-    navigateTo(`servers/search?q=${encodeURIComponent(searchQuery.value)}`)
+    navigateTo(`/servers/search?q=${encodeURIComponent(searchQuery.value)}`)
   }
 }
 </script>

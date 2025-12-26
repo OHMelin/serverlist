@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-between">
     <p class="text-lg font-medium not-sm:text-xs">
-      {{ serverCount.toLocaleString() }} servers found
+      {{ serverCount.toLocaleString('en-US') }} servers found
     </p>
 
     <div class="flex items-center gap-2">
