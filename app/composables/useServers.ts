@@ -51,7 +51,7 @@ function updateQueryParams(params: Record<string, string | string[] | undefined>
     }
   }
 
-  router.replace({ query })
+  router.push({ path: '/', query })
 }
 
 export function useServerSort() {
