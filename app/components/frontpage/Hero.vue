@@ -34,7 +34,7 @@
             color="primary"
             size="sm"
             icon="i-heroicons-plus"
-            to="/servers/add"
+            to="/profile/servers/add"
           >
             Add
           </UButton>
