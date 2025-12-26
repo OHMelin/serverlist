@@ -12,5 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-const serverCount = ref(13428)
+const { servers } = useServers()
+
+const serverCount = computed(() => servers.value.length)
 </script>
