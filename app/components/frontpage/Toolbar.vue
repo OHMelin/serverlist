@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-between">
-    <p class="text-lg font-medium">
+    <p class="text-lg font-medium not-sm:text-xs">
       {{ serverCount.toLocaleString() }} servers found
     </p>
 
