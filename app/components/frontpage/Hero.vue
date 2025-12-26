@@ -28,7 +28,6 @@
         size="xl"
         class="w-full max-w-lg"
         :ui="{ base: 'h-12' }"
-        @keyup.enter="onSearch"
       >
         <template #trailing>
           <UButton
@@ -46,16 +45,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import heroImage from '../../assets/images/hero.jpg'
 
-const searchQuery = ref('')
+const { searchQuery } = useServerSearch()
 const serverCount = ref(13428)
 const playerCount = ref(235072541)
-
-function onSearch() {
-  if (searchQuery.value.trim()) {
-    navigateTo(`/servers/search?q=${encodeURIComponent(searchQuery.value)}`)
-  }
-}
 </script>
