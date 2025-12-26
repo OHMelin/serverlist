@@ -1,15 +1,149 @@
 import type { Server } from '~/components/frontpage/Server.vue'
 
-export type SortOption = 'players_online' | 'name' | 'newest' | 'random'
+export type SortOption = 'players_online' | 'name' | 'newest'
 
-const currentSort = ref<SortOption>('players_online')
+const validSortOptions: SortOption[] = ['players_online', 'name', 'newest']
+
+const availableVersions = [
+  '1.8 - 1.20.4',
+  '1.9 - 1.20.4',
+  '1.12.2',
+  '1.16 - 1.20.4',
+  '1.17 - 1.20.4',
+]
+
+const availableTags = [
+  'Minigames',
+  'Skyblock',
+  'Bedwars',
+  'Prison',
+  'Survival',
+  'Creative',
+  'Factions',
+  'PvP',
+  'Economy',
+  'Parkour',
+  'Towny',
+  'Modded',
+  'Pixelmon',
+  'Cracked',
+  'KitPvP',
+  'SkyWars',
+  'EggWars',
+  'Practice',
+]
+
+function updateQueryParams(params: Record<string, string | string[] | undefined>) {
+  const router = useRouter()
+  const route = useRoute()
+
+  const query: Record<string, string | string[]> = {}
+
+  // Copy existing query params except ones we're updating
+  for (const [key, value] of Object.entries(route.query)) {
+    if (!(key in params) && value !== undefined) {
+      query[key] = value as string | string[]
+    }
+  }
+
+  // Add new params
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && !(Array.isArray(value) && value.length === 0)) {
+      query[key] = value
+    }
+  }
+
+  router.replace({ query })
+}
 
 export function useServerSort() {
+  const route = useRoute()
+
+  const currentSort = computed<SortOption>({
+    get: () => {
+      const sort = route.query.sort as string
+      return validSortOptions.includes(sort as SortOption) ? sort as SortOption : 'players_online'
+    },
+    set: (value: SortOption) => {
+      updateQueryParams({
+        sort: value === 'players_online' ? undefined : value,
+      })
+    },
+  })
+
+  function setSort(sort: SortOption) {
+    currentSort.value = sort
+  }
+
   return {
     currentSort,
-    setSort: (sort: SortOption) => {
-      currentSort.value = sort
+    setSort,
+  }
+}
+
+export function useServerFilter() {
+  const route = useRoute()
+
+  const selectedVersions = computed<string[]>({
+    get: () => {
+      const versions = route.query.version
+      if (!versions) return []
+      const arr = Array.isArray(versions) ? versions : [versions]
+      return arr.filter(v => availableVersions.includes(v as string)) as string[]
     },
+    set: (value: string[]) => {
+      updateQueryParams({ version: value.length > 0 ? value : undefined })
+    },
+  })
+
+  const selectedTags = computed<string[]>({
+    get: () => {
+      const tags = route.query.tag
+      if (!tags) return []
+      const arr = Array.isArray(tags) ? tags : [tags]
+      return arr.filter(t => availableTags.includes(t as string)) as string[]
+    },
+    set: (value: string[]) => {
+      updateQueryParams({ tag: value.length > 0 ? value : undefined })
+    },
+  })
+
+  function toggleVersion(version: string) {
+    const current = [...selectedVersions.value]
+    const index = current.indexOf(version)
+    if (index === -1) {
+      current.push(version)
+    }
+    else {
+      current.splice(index, 1)
+    }
+    selectedVersions.value = current
+  }
+
+  function toggleTag(tag: string) {
+    const current = [...selectedTags.value]
+    const index = current.indexOf(tag)
+    if (index === -1) {
+      current.push(tag)
+    }
+    else {
+      current.splice(index, 1)
+    }
+    selectedTags.value = current
+  }
+
+  function clearFilters() {
+    updateQueryParams({ version: undefined, tag: undefined })
+  }
+
+  return {
+    availableVersions,
+    availableTags,
+    selectedVersions,
+    selectedTags,
+    toggleVersion,
+    toggleTag,
+    clearFilters,
   }
 }
 
@@ -168,28 +302,37 @@ export function useServers() {
     },
   ])
 
+  const { currentSort } = useServerSort()
+  const { selectedVersions, selectedTags } = useServerFilter()
+
   const servers = computed(() => {
-    const sorted = [...rawServers.value]
+    let filtered = [...rawServers.value]
+
+    // Apply version filter
+    if (selectedVersions.value.length > 0) {
+      filtered = filtered.filter(server => selectedVersions.value.includes(server.version))
+    }
+
+    // Apply tag filter
+    if (selectedTags.value.length > 0) {
+      filtered = filtered.filter(server =>
+        server.tags.some(tag => selectedTags.value.includes(tag)),
+      )
+    }
+
+    // Apply sorting
     switch (currentSort.value) {
       case 'players_online':
-        sorted.sort((a, b) => b.onlinePlayers - a.onlinePlayers)
+        filtered.sort((a, b) => b.onlinePlayers - a.onlinePlayers)
         break
       case 'name':
-        sorted.sort((a, b) => a.name.localeCompare(b.name))
+        filtered.sort((a, b) => a.name.localeCompare(b.name))
         break
       case 'newest':
-        sorted.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
-        break
-      case 'random':
-        for (let i = sorted.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1))
-          const temp = sorted[i]!
-          sorted[i] = sorted[j]!
-          sorted[j] = temp
-        }
+        filtered.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
         break
     }
-    return sorted
+    return filtered
   })
 
   return { servers }

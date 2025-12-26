@@ -19,7 +19,6 @@ const sortOptions: { label: string, value: SortOption }[] = [
   { label: 'Players Online', value: 'players_online' },
   { label: 'A-Z', value: 'name' },
   { label: 'Newest First', value: 'newest' },
-  { label: 'Random', value: 'random' },
 ]
 
 const selectedSort = computed({
