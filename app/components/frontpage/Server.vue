@@ -8,45 +8,47 @@
         class="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none"
       >
       <div class="relative flex flex-row not-xl:flex-wrap gap-4">
-        <div class="flex not-xl:w-15 not-xl:shrink-0 xl:w-full flex-col gap-4 items-center">
-          <div class="w-15! h-15! shrink-0">
-            <img
-              :src="server.icon"
-              :alt="`${server.name} icon`"
-              class="w-15 h-15 rounded"
-            >
+        <div class="flex flex-row gap-4 max-[871px]:w-full">
+          <div class="flex w-15 xl:w-50 shrink-0 flex-col gap-4 items-center">
+            <div class="w-15! h-15! shrink-0">
+              <img
+                :src="server.icon"
+                :alt="`${server.name} icon`"
+                class="w-15 h-15 rounded"
+              >
+            </div>
+            <div class="text-center w-full min-w-0 overflow-hidden max-[871px]:m-auto max-[871px]:mb-0">
+              <p class="font-bold">
+                #{{ rank }}
+              </p>
+              <p class="truncate">
+                {{ server.name }}
+              </p>
+            </div>
           </div>
-          <div class="text-center w-full min-w-0 overflow-hidden">
-            <p class="font-bold">
-              #{{ rank }}
-            </p>
-            <p class="truncate">
-              {{ server.name }}
-            </p>
-          </div>
-        </div>
 
-        <div class="flex flex-col gap-4 max-[871px]:w-full">
-          <img
-            v-if="server.banner"
-            :src="server.banner"
-            :alt="`${server.name} banner`"
-            class="h-15 max-[871px]:w-full! max-[871px]:h-fit! w-117 rounded"
-          >
-          <div
-            v-else
-            class="h-15 max-[871px]:w-full! w-117 rounded bg-gray-800 flex flex-col justify-center items-center px-2 overflow-hidden"
-          >
-            <p
-              v-for="(line, index) in motdHtml"
-              :key="index"
-              class="text-sm max-[871px]:text-xs leading-tight whitespace-nowrap"
-              v-html="line"
-            />
+          <div class="flex flex-col gap-4 max-[871px]:flex-1">
+            <img
+              v-if="server.banner"
+              :src="server.banner"
+              :alt="`${server.name} banner`"
+              class="min-h-15 max-[871px]:w-full! max-[871px]:h-fit w-117 rounded"
+            >
+            <div
+              v-else
+              class="h-15 max-[871px]:w-full! w-117 rounded bg-gray-800 flex flex-col justify-center items-center px-2 overflow-hidden"
+            >
+              <p
+                v-for="(line, index) in motdHtml"
+                :key="index"
+                class="text-sm max-[871px]:text-xs max-md:text-[9px] leading-tight whitespace-nowrap"
+                v-html="line"
+              />
+            </div>
+            <p class="w-117 max-[871px]:w-full! line-clamp-2">
+              {{ server.description }}
+            </p>
           </div>
-          <p class="w-117 max-[871px]:w-full! line-clamp-2">
-            {{ server.description }}
-          </p>
         </div>
 
         <div class="flex flex-col gap-4 max-[871px]:w-full">
