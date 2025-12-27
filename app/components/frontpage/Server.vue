@@ -39,6 +39,7 @@
               class="h-15 max-[871px]:w-full! w-117 rounded bg-gray-800 flex flex-col justify-center items-center px-2 overflow-hidden"
             >
               <!-- eslint-disable vue/no-v-html -->
+              <!-- nosemgrep: javascript.vue.security.audit.xss.templates.avoid-v-html.avoid-v-html -->
               <p
                 v-for="(line, index) in sanitizedMotdHtml"
                 :key="index"
