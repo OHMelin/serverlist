@@ -177,7 +177,7 @@ export function useServers() {
     {
       position: 1,
       icon: 'https://api.mcsrvstat.us/icon/hypixel.net',
-      banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200',
+      banner: 'https://minecraftservers.org/banners/4001981758762480.gif',
       name: 'Hypixel',
       description: 'The largest Minecraft server in the world with tons of unique minigames!',
       ip: 'mc.hypixel.net',
@@ -190,7 +190,6 @@ export function useServers() {
     {
       position: 2,
       icon: 'https://api.mcsrvstat.us/icon/cubecraft.net',
-      banner: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=1200',
       name: 'CubeCraft Games',
       description: 'Home of EggWars, SkyWars, and many more exciting games!',
       ip: 'play.cubecraft.net',
@@ -203,7 +202,6 @@ export function useServers() {
     {
       position: 3,
       icon: 'https://api.mcsrvstat.us/icon/mineplex.com',
-      banner: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1200',
       name: 'Mineplex',
       description: 'A massive Minecraft server with a variety of fun games and modes.',
       ip: 'us.mineplex.com',
@@ -228,7 +226,6 @@ export function useServers() {
     {
       position: 5,
       icon: 'https://api.mcsrvstat.us/icon/manacube.com',
-      banner: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200',
       name: 'ManaCube',
       description: 'Featuring Skyblock, Parkour, Survival, and much more!',
       ip: 'play.manacube.com',
@@ -253,7 +250,6 @@ export function useServers() {
     {
       position: 7,
       icon: 'https://api.mcsrvstat.us/icon/purpleprison.org',
-      banner: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200',
       name: 'Purple Prison',
       description: 'Top-rated prison server with amazing custom features.',
       ip: 'purpleprison.org',
@@ -278,7 +274,6 @@ export function useServers() {
     {
       position: 9,
       icon: 'https://api.mcsrvstat.us/icon/play.minesuperior.com',
-      banner: 'https://images.unsplash.com/photo-1552820728-8b83bb6b2b0c?w=1200',
       name: 'MineSuperior',
       description: 'Factions, Prison, Skyblock and more competitive gamemodes.',
       ip: 'play.minesuperior.com',
@@ -303,7 +298,6 @@ export function useServers() {
     {
       position: 11,
       icon: 'https://api.mcsrvstat.us/icon/mccentral.org',
-      banner: 'https://images.unsplash.com/photo-1493711662062-fa541f7f3d24?w=1200',
       name: 'MCCentral',
       description: 'Prison, KitPvP, Skyblock, and tons of minigames!',
       ip: 'mccentral.org',
