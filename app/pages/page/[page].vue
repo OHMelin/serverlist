@@ -6,12 +6,13 @@
         :items="servers"
         :per-page="10"
       >
-        <template #default="{ items }">
+        <template #default="{ items, startIndex }">
           <div class="flex flex-col gap-4">
             <FrontpageServer
-              v-for="server in items"
-              :key="server.position"
+              v-for="(server, index) in items"
+              :key="server.ip"
               :server="server"
+              :rank="startIndex + index + 1"
             />
           </div>
         </template>
