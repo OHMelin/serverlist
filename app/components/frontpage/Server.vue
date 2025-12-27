@@ -7,7 +7,7 @@
         :alt="`${server.name} banner background`"
         class="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none"
       >
-      <div class="relative flex flex-row gap-4">
+      <div class="relative flex flex-row not-xl:flex-wrap gap-4">
         <div class="flex not-xl:w-15 not-xl:shrink-0 xl:w-full flex-col gap-4 items-center">
           <div class="w-15! h-15! shrink-0">
             <img
@@ -26,31 +26,31 @@
           </div>
         </div>
 
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 max-[871px]:w-full">
           <img
             v-if="server.banner"
             :src="server.banner"
             :alt="`${server.name} banner`"
-            class="h-15 w-117 rounded"
+            class="h-15 max-[871px]:w-full! max-[871px]:h-fit! w-117 rounded"
           >
           <div
             v-else
-            class="h-15 w-117 rounded bg-gray-800 flex flex-col justify-center items-center px-2 overflow-hidden"
+            class="h-15 max-[871px]:w-full! w-117 rounded bg-gray-800 flex flex-col justify-center items-center px-2 overflow-hidden"
           >
             <p
               v-for="(line, index) in motdHtml"
               :key="index"
-              class="text-sm leading-tight whitespace-nowrap"
+              class="text-sm max-[871px]:text-xs leading-tight whitespace-nowrap"
               v-html="line"
             />
           </div>
-          <p class="w-117 line-clamp-2">
+          <p class="w-117 max-[871px]:w-full! line-clamp-2">
             {{ server.description }}
           </p>
         </div>
 
-        <div class="flex flex-col gap-4">
-          <div class="h-15 w-50 flex flex-col">
+        <div class="flex flex-col gap-4 max-[871px]:w-full">
+          <div class="h-15 min-w-50 not-md:w-full flex flex-col">
             <UButton
               color="neutral"
               variant="soft"
@@ -82,19 +82,16 @@
           </div>
         </div>
 
-        <div class="flex w-full gap-2">
-          <div class="flex flex-wrap gap-2">
-            <UBadge
-              v-for="tag in server.tags"
-              :key="tag"
-              color="neutral"
-              variant="subtle"
-              size="sm"
-              class="h-fit"
-            >
-              {{ tag }}
-            </UBadge>
-          </div>
+        <div class="flex min-w-50 flex-wrap content-start gap-2">
+          <UBadge
+            v-for="tag in server.tags"
+            :key="tag"
+            color="neutral"
+            variant="subtle"
+            size="sm"
+          >
+            {{ tag }}
+          </UBadge>
         </div>
       </div>
     </template>
