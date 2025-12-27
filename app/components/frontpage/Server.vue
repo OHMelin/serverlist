@@ -38,10 +38,11 @@
               v-else
               class="h-15 max-[871px]:w-full! w-117 rounded bg-gray-800 flex flex-col justify-center items-center px-2 overflow-hidden"
             >
+              <!-- eslint-disable vue/no-v-html -->
               <p
-                v-for="(line, index) in motdHtml"
+                v-for="(line, index) in sanitizedMotdHtml"
                 :key="index"
-                class="text-sm max-[871px]:text-xs max-md:text-[9px] leading-tight whitespace-nowrap"
+                class="text-sm max-[871px]:text-xs max-[450px]:text-[9px] leading-tight whitespace-nowrap"
                 v-html="line"
               />
             </div>
@@ -73,14 +74,20 @@
             </UButton>
           </div>
           <div>
-            <p>
-              <UIcon name="i-lucide-wifi" />
-              {{ server.onlinePlayers }}/{{ server.maxPlayers }}
-            </p>
-            <p>
-              <UIcon name="i-lucide-database" />
-              Version: {{ server.version }}
-            </p>
+            <div class="flex items-center gap-1">
+              <UIcon
+                name="i-lucide-wifi"
+                class="mb-1"
+              />
+              <p>{{ server.onlinePlayers }}/{{ server.maxPlayers }}</p>
+            </div>
+            <div class="flex items-center gap-1">
+              <UIcon
+                name="i-lucide-box"
+                class="mb-px"
+              />
+              <p>Version: {{ server.version }}</p>
+            </div>
           </div>
         </div>
 
@@ -101,6 +108,8 @@
 </template>
 
 <script lang="ts" setup>
+import DOMPurify from 'isomorphic-dompurify'
+
 export interface Server {
   position: number
   icon: string
@@ -122,6 +131,10 @@ const { server } = defineProps<{
 
 const toast = useToast()
 const motdHtml = ref<string[]>([])
+
+const sanitizedMotdHtml = computed(() =>
+  motdHtml.value.map(line => DOMPurify.sanitize(line)),
+)
 
 if (!server.banner) {
   const { data } = await useFetch<{ motd?: { html?: string[] } }>(`https://api.mcsrvstat.us/2/${server.ip}`)
