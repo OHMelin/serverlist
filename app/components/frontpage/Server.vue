@@ -41,7 +41,7 @@
             />
           </div>
           <p class="w-117 line-clamp-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde dignissimos ipsum quis ipsam repellat facere quam cumque quas. Laboriosam ipsam ratione sit nihil corrupti omnis quia iste vitae totam? Aperiam quae nisi sit id, explicabo fugit fugiat facilis eligendi repudiandae et, laudantium iusto molestiae dolor consequatur a ipsa nam ullam?
+            {{ server.description }}
           </p>
         </div>
 
