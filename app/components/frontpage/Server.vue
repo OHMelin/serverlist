@@ -11,7 +11,7 @@
 
     <div class="relative flex items-center gap-4 p-4">
       <div class="shrink-0 w-8 text-center">
-        <span class="text-xl font-bold text-gray-400">#{{ server.position }}</span>
+        <span class="text-xl font-bold text-gray-400">#{{ rank }}</span>
       </div>
 
       <div class="shrink-0">
@@ -84,11 +84,12 @@ export interface Server {
   dateAdded: string
 }
 
-const props = defineProps<{
+const { server } = defineProps<{
   server: Server
+  rank: number
 }>()
 
 async function copyIp() {
-  await navigator.clipboard.writeText(props.server.ip)
+  await navigator.clipboard.writeText(server.ip)
 }
 </script>

@@ -5,6 +5,7 @@
       :items="paginatedItems"
       :current-page="currentPage"
       :total-pages="totalPages"
+      :start-index="startIndex"
     />
 
     <div
@@ -39,8 +40,10 @@ const currentPage = computed(() => {
 
 const totalPages = computed(() => Math.ceil(props.items.length / props.perPage))
 
+const startIndex = computed(() => (currentPage.value - 1) * props.perPage)
+
 const paginatedItems = computed(() => {
-  const start = (currentPage.value - 1) * props.perPage
+  const start = startIndex.value
   const end = start + props.perPage
   return props.items.slice(start, end)
 })
