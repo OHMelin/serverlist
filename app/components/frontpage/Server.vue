@@ -8,17 +8,21 @@
         class="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none"
       >
       <div class="relative flex flex-row gap-4">
-        <div class="flex w-full flex-col gap-4 items-center">
-          <img
-            :src="server.icon"
-            :alt="`${server.name} icon`"
-            class="w-15 h-15 rounded"
-          >
-          <div class="text-center">
+        <div class="flex not-xl:w-15 not-xl:shrink-0 xl:w-full flex-col gap-4 items-center">
+          <div class="w-15! h-15! shrink-0">
+            <img
+              :src="server.icon"
+              :alt="`${server.name} icon`"
+              class="w-15 h-15 rounded"
+            >
+          </div>
+          <div class="text-center w-full min-w-0 overflow-hidden">
             <p class="font-bold">
               #{{ rank }}
             </p>
-            <p>{{ server.name }}</p>
+            <p class="truncate">
+              {{ server.name }}
+            </p>
           </div>
         </div>
 
